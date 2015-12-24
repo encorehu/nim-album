@@ -1,0 +1,7 @@
+nimcache/
+public/upfiles/*
+*.exe
+*.so
+*.dll
+*.sqlite3
+*.db
