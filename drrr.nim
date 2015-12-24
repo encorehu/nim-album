@@ -128,6 +128,9 @@ routes:
     attachment "public/root/index.html"
     resp "blah"
 
+  get "/list":
+    redirect "/"
+
   get "/upload":
     var html = ""
     var length = "public/".len
