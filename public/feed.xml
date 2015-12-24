@@ -1,0 +1,44 @@
+<feed xmlns="http://www.w3.org/2005/Atom">
+<title> Chatroom (mysite.com)</title>
+<subtitle> Chatroom |  Fan Community</subtitle>
+<updated>2015-12-23T21:12:16+08:00</updated>
+<id>http://mysite.com/</id>
+<rights>Copyright ? 2015, Administrator</rights>
+<link rel="alternate" type="text/html" hreflang="en" href="http://mysite.com/"/>
+<link rel="self" type="application/atom+xml" href="http://mysite.com/feed.xml"/>
+<author>
+<name>Administrator</name>
+<uri>http://mysite.com/</uri>
+<email>x@mysite.com</email>
+</author>
+<entry>
+<title> for Android</title>
+<id>http://mysite.com/blog/-android/</id>
+<link rel="alternate" type="text/html" href="http://mysite.com/blog/-android/"/>
+<published>2015-12-16T00:00:00+08:00</published>
+<updated>2015-12-23T21:12:13+08:00</updated>
+<author>
+<name>Administrator</name>
+<uri>http://mysite.com/</uri>
+<email>x@mysite.com</email>
+</author>
+<content type="html" xml:base="http://mysite.com/">
+<!-- English --> <div data-langs="en" data-langs-default=""> <p>We’ve add support for Android users! Now you can use  in a separate app on your Android device, download it now on <a href="https://play.google.com/store/apps/details?id=com.drrr.">Play Store</a>!</p> </div> <!-- Chinese --> <div data-langs="zh"> <p>我們為 Android 用戶增加了 app 支援，請前往 <a href="https://play.google.com/store/apps/details?id=com.drrr.">Play Store</a> 下載！</p> </div>
+</content>
+<summary/>
+</entry>
+<entry>
+<title>Hello World</title>
+<id>http://mysite.com/blog/hello-world/</id>
+<link rel="alternate" type="text/html" href="http://mysite.com/blog/hello-world/"/>
+<published>2014-07-24T00:00:00+08:00</published>
+<updated>2015-08-24T14:52:22+08:00</updated>
+<author>
+<name>Administrator</name>
+<uri>http://mysite.com/</uri>
+<email>x@mysite.com</email>
+</author>
+<content type="html" xml:base="http://mysite.com/"><p>:)</p></content>
+<summary>:)</summary>
+</entry>
+</feed>
