@@ -54,7 +54,7 @@ routes:
         </style>
         """
     var length = "public/".len
-    for file in walkFiles("public/upfiles/*.*"):
+    for file in walkFiles("public/upfiles/*.jpg"):
       #html.add "<li>" & file[length..^1].replace("\\","/") & "</li>"
       var filepath = file[length..^1].replace("\\","/")
       html.add """
