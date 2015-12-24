@@ -11,11 +11,109 @@ include "main.tmpl"
 
 const DEFAULT_CONTENT_TYPE = "text/html; charset=utf-8"
 const LINE = "------------------------"
+const AUTHOR = "糊糊"
+
 let mimedb = newMimetypes()
+
 routes:
   get "/":
     let headers = {"Content-type": "text/html; charset=utf-8"}
-    resp Http200, headers, a(href="/upload", "上传文件")
+    var html = ""
+    html.add """
+    <header class="am-topbar am-topbar-fixed-top">
+    <h1 class="am-topbar-brand">
+        <a href="#">Album</a>
+    </h1>
+    <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only"
+            data-am-collapse="{target: '#doc-topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span
+            class="am-icon-bars"></span></button>
+
+    <div class="am-collapse am-topbar-collapse" id="doc-topbar-collapse">
+        <ul class="am-nav am-nav-pills am-topbar-nav">
+            <li class="am-active"><a href="/list">首页</a></li>
+            <li><a href="/upload">上传</a></li>
+
+        </ul>
+    </div>
+</header>
+<div class="imgsparent" style="position: relative;margin: 50px;">
+        <style>
+            .imgdiv{
+                position: absolute;
+                border: solid 1px #D8D8D8;
+                -webkit-transition: all .7s ease-out .1s;
+                -moz-transition: all .7s ease-out;
+                -o-transition: all .7s ease-out .1s;
+                transition: all .7s ease-out .1s
+
+                float:left;
+            }
+            .imgdiv img{
+                width: 250px;
+            }
+        </style>
+        """
+    var length = "public/".len
+    for file in walkFiles("public/upfiles/*.*"):
+      #html.add "<li>" & file[length..^1].replace("\\","/") & "</li>"
+      var filepath = file[length..^1].replace("\\","/")
+      html.add """
+          <div class="imgdiv" id="$1">
+                  <img
+                      src="views?id=$2"
+                      class="am-img-responsive am-radius">
+                  <h3 class="am-thumbnail-caption am-text-truncate am-text-center">$3</h3>
+
+          </div>
+      """  % [filepath,filepath,filepath]
+    html.add """
+    </div>
+
+<script>
+    /*
+     原理：1.把所有的li的高度值放到数组里面
+     2.第一行的top都为0
+     3.计算高度值最小的值是哪个li
+     4.把接下来的li放到那个li的下面
+     作者：刘晓帆
+     博客地址：[url]http://liuxiaofan.com[/url]
+     编写时间：2012年6月9日
+     */
+    var margin =20;//这里设置间距
+    var par=$(".imgsparent");//这里是区块名称
+    var li=$(".imgdiv");//这里是区块名称
+    var	li_W = 250+margin;//取区块的实际宽度（包含间距，这里使用源生的offsetWidth函数，不适用jQuery的width()函数是因为它不能取得实际宽度，例如元素内有pandding就不行了）
+    function autoresize(){//定义成函数便于调用
+        var h=[];//记录区块高度的数组
+        var n = document.documentElement.offsetWidth/li_W|0;//窗口的宽度除以区块宽度就是一行能放几个区块
+        for(var i = 0;i < li.length;i++) {//有多少个li就循环多少次
+            li_H = li[i].offsetHeight;//获取每个li的高度
+            if(i < n) {//n是一行最多的li，所以小于n就是第一行了
+                h[i]=li_H;//把每个li放到数组里面
+                li.eq(i).css("top",0);//第一行的Li的top值为0
+                li.eq(i).css("left",i * li_W);//第i个li的左坐标就是i*li的宽度
+            }
+            else{
+                min_H =Math.min.apply(null,h) ;//取得数组中的最小值，区块中高度值最小的那个
+                minKey = getarraykey(h, min_H);//最小的值对应的指针
+                h[minKey] += li_H+margin ;//加上新高度后更新高度值
+                li.eq(i).css("top",min_H+margin);//先得到高度最小的Li，然后把接下来的li放到它的下面
+                li.eq(i).css("left",minKey * li_W);	//第i个li的左坐标就是i*li的宽度
+            }
+
+        }
+        par.css("height",Math.max.apply(null,h))
+    }
+    /* 使用for in运算返回数组中某一值的对应项数(比如算出最小的高度值是数组里面的第几个) */
+    function getarraykey(s, v) {for(k in s) {if(s[k] == v) {return k;}}}
+    /*这里一定要用onload，因为图片不加载完就不知道高度值*/
+    window.onload = function() {autoresize();};
+    /*浏览器窗口改变时也运行函数*/
+    window.onresize = function() {autoresize();};
+</script>
+"""
+    let data = generateHTMLPage("主页", html)
+    resp data, DEFAULT_CONTENT_TYPE
   get "/lounge":
     let data = generateHTMLPage("主页", h1("lounge page"))
     resp data, DEFAULT_CONTENT_TYPE
