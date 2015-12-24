@@ -133,14 +133,41 @@ routes:
 
   get "/upload":
     var html = ""
-    var length = "public/".len
-    for file in walkFiles("public/upfiles/*.*"):
-      html.add "<li>" & file[length..^1].replace("\\","/") & "</li>"
-    html.add "<form action=\"upload\" method=\"post\" enctype=\"multipart/form-data\">"
-    html.add "<input type=\"file\" name=\"file\" value=\"file\">"
-    html.add "<input type=\"submit\" value=\"Submit\" name=\"submit\">"
-    html.add "</form>"
-    resp(html)
+    html.add """
+    <header class="am-topbar am-topbar-fixed-top">
+    <h1 class="am-topbar-brand">
+        <a href="#">Album</a>
+    </h1>
+    <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only"
+            data-am-collapse="{target: '#doc-topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span
+            class="am-icon-bars"></span></button>
+
+    <div class="am-collapse am-topbar-collapse" id="doc-topbar-collapse">
+        <ul class="am-nav am-nav-pills am-topbar-nav">
+            <li><a href="/">首页</a></li>
+            <li class="am-active"><a href="/upload">上传</a></li>
+
+        </ul>
+    </div>
+</header>
+<div class="am-g am-padding">
+
+    <div class="am-panel am-panel-default">
+        <div class="am-panel-hd">上传一张照片</div>
+        <div class="am-panel-bd">
+            <form method="POST" action="/upload" enctype="multipart/form-data" class="am-form ">
+                <p class="am-form-help">选择一张图片上传</p>
+                <input name="image" type="file"/>
+                <input name="submit" type="submit" value="上传" class="am-btn-success">
+            </form>
+        </div>
+    </div>
+
+</div>
+
+    """
+    let data = generateHTMLPage("上传图片", html)
+    resp data, DEFAULT_CONTENT_TYPE
 
   post "/upload":
     var data = request.formData["file"].body
