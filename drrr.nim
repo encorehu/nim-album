@@ -170,12 +170,19 @@ routes:
     resp data, DEFAULT_CONTENT_TYPE
 
   post "/upload":
-    var data = request.formData["file"].body
-    var timestamp = int(toSeconds(getTime()))
-    var (dir, filename, ext) = splitFile(request.formData["file"].fields["filename"])
-    ext = ext.toLower # ext here is like ".PNG"
-    var newfilename = addFileExt($timestamp, ext)
-    writeFile("public/upfiles/" & newfilename, data)
-    redirect("/upfiles/" & newfilename)
+    echo request.formData
+    # single file upload
+    for k in request.formData.keys():
+      if request.formData[k].fields.hasKey("filename"):
+        var timestamp = int(toSeconds(getTime()))
+        var (dir, filename, ext) = splitFile(request.formData[k].fields["filename"])
+        var data = request.formData[k].body
+        ext = ext.toLower # ext here is like ".PNG"
+        var newfilename = addFileExt($timestamp, ext)
+        writeFile("public/upfiles/" & newfilename, data)
+        redirect("/")
+      else:
+        continue
+    redirect("/upload")
 
 runForever()
