@@ -185,4 +185,13 @@ routes:
         continue
     redirect("/upload")
 
+  get "/views":
+    echo request.params
+    cond (@"id" != "")
+    var (dir, name, ext)=splitFile(@"id")
+    ext=ext.replace(".","")
+    var contentType = getMimetype(mimedb, ext.toLower())
+    echo ext, contentType
+    resp readFile("public/" & @"id"), contentType
+
 runForever()
