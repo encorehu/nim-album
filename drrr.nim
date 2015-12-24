@@ -194,4 +194,7 @@ routes:
     echo ext, contentType
     resp readFile("public/" & @"id"), contentType
 
-runForever()
+when isMainModule:
+  if not dirExists("public/upfiles"):
+    createDir("public/upfiles")
+  runForever()
